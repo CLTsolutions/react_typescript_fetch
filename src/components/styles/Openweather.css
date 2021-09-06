@@ -15,9 +15,21 @@
   align-items: center;
 }
 
+.temperature h3 {
+  font-size: 1.5rem;
+}
+
 .btn {
   width: 8rem;
   height: 2rem;
-  border-radius: 2%;
+  border-radius: 3%;
   margin: auto;
+  color: white;
+  background: darkslateblue;
+  box-shadow: 3px 4px 4px gray;
+}
+
+.today {
+  font-style: italic;
+  font-size: 1.2rem;
 }

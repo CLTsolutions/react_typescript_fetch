@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import './styles/Openweather.css'
-
-type Props = {
-  API_KEY: string
-}
+import '../styles/Openweather.css'
 
 type OpenweatherState = {
   latitude: number
@@ -63,12 +59,10 @@ class Openweather extends Component<{}, OpenweatherState> {
 
   location = () => {
     navigator.geolocation.getCurrentPosition(position => {
-      // console.log(position)
       this.setState({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       })
-      // console.log(this.state.latitude, this.state.longitude)
     })
   }
 
@@ -81,8 +75,6 @@ class Openweather extends Component<{}, OpenweatherState> {
 
     let res = await fetch(baseUrl)
     let data = await res.json()
-    console.log(data)
-    console.log(data.current.temp)
     this.setState({
       temp: Math.round(data.current.temp),
       conditions: data.current.weather[0].description,
@@ -95,7 +87,6 @@ class Openweather extends Component<{}, OpenweatherState> {
   }
 
   isLoading() {
-    console.log('loading')
     return <p>Loading...</p>
   }
 
@@ -103,7 +94,7 @@ class Openweather extends Component<{}, OpenweatherState> {
     return this.state.temp > 0 ? (
       <>
         <h3>{`Currently: ${this.state.temp}\u00B0F`}</h3>
-        <p>
+        <p className='today'>
           {`Feels like ${this.state.feelsLike}\u00B0F. ${this.state.conditions}.`}
         </p>
         <p>{`Tomorrow's high will be ${this.state.tomorrowHigh}\u00B0F and the low will be ${this.state.tomorrowLow}\u00B0F. You can expect ${this.state.tomorrowConditions}.`}</p>
@@ -117,7 +108,7 @@ class Openweather extends Component<{}, OpenweatherState> {
     return (
       <div className='background'>
         <div className='temperature'>
-          <h1>Openweather Fetch</h1>
+          <h1>What's Your Weather?</h1>
           <button className='btn' onClick={this.fetchWeather}>
             Fetch Your Weather
           </button>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './App.css'
-import OpenweatherIndex from './components/OpenweatherIndex'
+import OpenweatherIndex from './components/weather/OpenweatherIndex'
 
 function App() {
   return (

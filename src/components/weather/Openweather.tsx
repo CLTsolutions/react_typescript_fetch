@@ -57,7 +57,7 @@ class Openweather extends Component<{}, OpenweatherState> {
     })
   }
 
-  location = () => {
+  location = (): void => {
     navigator.geolocation.getCurrentPosition(position => {
       this.setState({
         latitude: position.coords.latitude,
@@ -66,7 +66,7 @@ class Openweather extends Component<{}, OpenweatherState> {
     })
   }
 
-  fetchWeather = async () => {
+  fetchWeather = async (): Promise<void> => {
     this.setState({ isLoading: true })
 
     const lat = this.state.latitude
@@ -86,11 +86,11 @@ class Openweather extends Component<{}, OpenweatherState> {
     })
   }
 
-  isLoading() {
+  isLoading(): JSX.Element {
     return <p>Loading...</p>
   }
 
-  displayWeather() {
+  displayWeather(): JSX.Element {
     return this.state.temp > 0 ? (
       <>
         <h3>{`Currently: ${this.state.temp}\u00B0F`}</h3>

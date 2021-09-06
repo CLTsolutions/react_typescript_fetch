@@ -81,9 +81,10 @@ class Openweather extends Component<{}, OpenweatherState> {
       feelsLike: Math.round(data.current.feels_like),
       tomorrowHigh: Math.round(data.daily[1].temp.day),
       tomorrowLow: Math.round(data.daily[1].temp.eve),
-      tomorrowConditions: data.daily[1].weather[0].description,
+      tomorrowConditions: data.daily[1].weather[0].main,
       isLoading: false,
     })
+    console.log(data)
   }
 
   isLoading(): JSX.Element {
@@ -97,7 +98,7 @@ class Openweather extends Component<{}, OpenweatherState> {
         <p className='today'>
           {`Feels like ${this.state.feelsLike}\u00B0F. ${this.state.conditions}.`}
         </p>
-        <p>{`Tomorrow's high will be ${this.state.tomorrowHigh}\u00B0F and the low will be ${this.state.tomorrowLow}\u00B0F. You can expect ${this.state.tomorrowConditions}.`}</p>
+        <p>{`Tomorrow's high will be ${this.state.tomorrowHigh}\u00B0F and the low will be ${this.state.tomorrowLow}\u00B0F. You can expect conditions to be ${this.state.tomorrowConditions}.`}</p>
       </>
     ) : (
       <></>

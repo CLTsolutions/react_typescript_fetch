@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import '../styles/Openweather.css'
 
 type OpenweatherState = {
-  latitude: number
-  longitude: number
+  lat: number
+  lon: number
   temp: number
   conditions: string
   feelsLike: number
@@ -17,8 +17,8 @@ class Openweather extends Component<{}, OpenweatherState> {
   constructor(props: {}) {
     super(props)
     this.state = {
-      latitude: 0,
-      longitude: 0,
+      lat: 0,
+      lon: 0,
       temp: 0,
       conditions: '',
       feelsLike: 0,
@@ -45,8 +45,8 @@ class Openweather extends Component<{}, OpenweatherState> {
   componentWillUnmount() {
     // resetting state
     this.setState({
-      latitude: 0,
-      longitude: 0,
+      lat: 0,
+      lon: 0,
       temp: 0,
       conditions: '',
       feelsLike: 0,
@@ -60,8 +60,8 @@ class Openweather extends Component<{}, OpenweatherState> {
   location = (): void => {
     navigator.geolocation.getCurrentPosition(position => {
       this.setState({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
       })
     })
   }
@@ -69,9 +69,8 @@ class Openweather extends Component<{}, OpenweatherState> {
   fetchWeather = async (): Promise<void> => {
     this.setState({ isLoading: true })
 
-    const lat = this.state.latitude
-    const long = this.state.longitude
-    const baseUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&appid=792aea5e57486b3bf6f55ade249fb41e`
+    const { lat, lon } = this.state
+    const baseUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=792aea5e57486b3bf6f55ade249fb41e`
 
     let res = await fetch(baseUrl)
     let data = await res.json()
@@ -84,7 +83,7 @@ class Openweather extends Component<{}, OpenweatherState> {
       tomorrowConditions: data.daily[1].weather[0].main,
       isLoading: false,
     })
-    console.log(data)
+    // console.log(data)
   }
 
   isLoading(): JSX.Element {
@@ -92,13 +91,21 @@ class Openweather extends Component<{}, OpenweatherState> {
   }
 
   displayWeather(): JSX.Element {
-    return this.state.temp > 0 ? (
+    const {
+      temp,
+      feelsLike,
+      conditions,
+      tomorrowHigh,
+      tomorrowLow,
+      tomorrowConditions,
+    } = this.state
+    return temp > 0 ? (
       <>
-        <h3>{`Currently: ${this.state.temp}\u00B0F`}</h3>
+        <h3>{`Currently: ${temp}\u00B0F`}</h3>
         <p className='today'>
-          {`Feels like ${this.state.feelsLike}\u00B0F. ${this.state.conditions}.`}
+          {`Feels like ${feelsLike}\u00B0F. ${conditions}.`}
         </p>
-        <p>{`Tomorrow's high will be ${this.state.tomorrowHigh}\u00B0F and the low will be ${this.state.tomorrowLow}\u00B0F. You can expect conditions to be ${this.state.tomorrowConditions}.`}</p>
+        <p>{`Tomorrow's high will be ${tomorrowHigh}\u00B0F and the low will be ${tomorrowLow}\u00B0F. You can expect conditions to be ${tomorrowConditions}.`}</p>
       </>
     ) : (
       <></>
@@ -106,6 +113,7 @@ class Openweather extends Component<{}, OpenweatherState> {
   }
 
   render() {
+    const { isLoading } = this.state
     return (
       <div className='background'>
         <div className='temperature'>
@@ -113,9 +121,7 @@ class Openweather extends Component<{}, OpenweatherState> {
           <button className='btn' onClick={this.fetchWeather}>
             Fetch Your Weather
           </button>
-          {!this.state.isLoading === false
-            ? this.isLoading()
-            : this.displayWeather()}
+          {!isLoading === false ? this.isLoading() : this.displayWeather()}
         </div>
       </div>
     )
